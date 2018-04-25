@@ -1,5 +1,20 @@
-# GIISOF01-3-005-Social-App-NodeJS
-This is the repo to develop the second deliverable for the GIISOF01-3-005 subject form the University of Oviedo.
 
-## Mandatory Test to merge with master
-- pullaprove 
+
+# SocialApp
+
+
+
+## Usage
+
+
+
+## Developing
+
+
+
+### Tools
+
+Created with [Nodeclipse](https://github.com/Nodeclipse/nodeclipse-1)
+ ([Eclipse Marketplace](http://marketplace.eclipse.org/content/nodeclipse), [site](http://www.nodeclipse.org))   
+
+Nodeclipse is free open-source project that grows with your contributions.
