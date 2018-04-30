@@ -1,8 +1,8 @@
 {
-  "name": "sdi-UO236856UO252406",
+  "name": "RedSocial",
   "version": "0.1.0",
-  "description": "Red Social",
-  "main": "main.js",
+  "description": "RedSocial",
+  "main": "hello-world-server.js",
   "scripts": {
     "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
   },
@@ -12,7 +12,7 @@
     "eclipse",
     "nodeclipse"
   ],
-  "author": "UO236856UO252406",
+  "author": "",
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
