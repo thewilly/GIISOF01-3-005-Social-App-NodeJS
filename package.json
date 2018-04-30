@@ -1,8 +1,8 @@
 {
-  "name": "SocialApp",
+  "name": "sdi-UO236856UO252406",
   "version": "0.1.0",
-  "description": "SocialApp",
-  "main": "hello-world-server.js",
+  "description": "Red Social",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
   },
@@ -12,7 +12,12 @@
     "eclipse",
     "nodeclipse"
   ],
-  "author": "",
+  "author": "UO236856UO252406",
   "license": "MIT",
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongodb": "^3.0.7",
+    "swig": "^1.4.2"
+  }
 }

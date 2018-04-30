@@ -1,4 +1,8 @@
 /target/
+.jshintrc
+.sublime-project
+
+node_modules/*
 
 .metadata
 bin/
