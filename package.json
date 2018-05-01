@@ -16,7 +16,10 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "crypto": "^1.0.1",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "mongodb": "^3.0.7",
     "swig": "^1.4.2"
   }
