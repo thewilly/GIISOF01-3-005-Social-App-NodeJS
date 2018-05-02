@@ -77,13 +77,29 @@ module.exports = function(app, swig, gestorBD) {
   });
 
   app.get("/listarUsuarios", function(req, res) {
+    var criterio = {};
+    if (req.query.busqueda != null) {
+      criterio = {
+        '$or': [{
+          "nombre": {
+            $regex: ".*" + req.query.busqueda + ".*"
+          }
+        }, {
+          "email": {
+            $regex: ".*" + req.query.busqueda + ".*"
+          }
+        }]
+      };
+    }
+
     var pg = parseInt(req.query.pg); // Es String !!!
     if (req.query.pg == null) { // Puede no venir el param
       pg = 1;
     }
 
-    var usuarios = gestorBD.obtenerUsuarios(pg, function(usuarios,total) {
-
+    var usuarios = gestorBD.obtenerUsuariosPg(criterio, pg, function(usuarios,
+            total) {
+      console.log(total);
       var pgUltima = total / 5;
       if (total % 5 > 0) { // Sobran decimales
         pgUltima = pgUltima + 1;
