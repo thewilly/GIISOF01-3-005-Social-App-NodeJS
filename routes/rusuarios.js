@@ -13,11 +13,12 @@ module.exports = function(app, swig, gestorBD) {
    */
   app.post('/usuario', function(req, res) {
     if (req.body.password != req.body.password2) {
+      console.log('The masswords missmatch so aborting the user creation.');
       res.redirect("/registrarse?mensaje=Las contraseñas no coinciden");
     } else {
+      console.log('The passwords match so more filters to pass.');
       var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
               .update(req.body.password).digest('hex');
-      console.log(seguro);
 
       var criterio = {
         email: req.body.email
@@ -25,10 +26,12 @@ module.exports = function(app, swig, gestorBD) {
 
       gestorBD.obtenerUsuarios(criterio, function(usuarios) {
         if (usuarios != null || usuarios.length > 0) {
+          console.log('Email already registered, aborting the user creation.')
           res.redirect("/registrarse"
                   + "?mensaje=Email ya registrado en el sistema"
                   + "&tipoMensaje=alert-danger ");
         } else {
+          console.log('The email has not been registered so creating user.');
           var usuario = {
             email: req.body.email,
             name: req.body.nombre,
