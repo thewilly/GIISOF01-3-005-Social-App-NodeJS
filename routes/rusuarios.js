@@ -61,7 +61,7 @@ module.exports = function(app, swig, gestorBD) {
       email: req.body.email,
       password: seguro
     }
-    gestorBD.obtenerUsuarios(criterio, function(usuarios) {
+    gestorBD.login(criterio,function(usuarios) {
       if (usuarios == null || usuarios.length == 0) {
         req.session.usuario = null;
         res.redirect("/identificarse" + "?mensaje=Email o password incorrecto"
@@ -79,19 +79,48 @@ module.exports = function(app, swig, gestorBD) {
       pg = 1;
     }
 
-    var usuarios = gestorBD.obtenerUsuarios(pg, function(usuarios,total) {
+    var usuarios = gestorBD.obtenerUsuarios(pg, function(usuarios, total) {
 
-      var pgUltima = total / 5;
-      if (total % 5 > 0) { // Sobran decimales
-        pgUltima = pgUltima + 1;
+      var criterio = {
+        usuario: req.session.usuario
       }
+      var peticiones = gestorBD.obtenerPeticiones(criterio,
+              function(peticiones) {
 
-      var respuesta = swig.renderFile('views/blistaUsuarios.html', {
-        usuarios: usuarios,
-        pgActual: pg,
-        pgUltima: pgUltima
-      });
-      res.send(respuesta);
+                var pgUltima = total / 5;
+                if (total % 5 > 0) { // Sobran decimales
+                  pgUltima = pgUltima + 1;
+                }
+
+                var respuesta = swig.renderFile('views/blistaUsuarios.html', {
+                  usuarios: usuarios,
+                  peticiones: peticiones,
+                  boton: "true",
+                  pgActual: pg,
+                  pgUltima: pgUltima
+                });
+                res.send(respuesta);
+              });
     });
   });
+
+  app.get('/listarUsuarios/peticion/:email', function(req, res) {
+    var peticion = {
+      usuario: req.session.usuario,
+      peticionId: req.params.email
+    }
+    gestorBD.insertarPeticion(peticion, function(idPeticion) {
+      if (idPeticion == null) {
+        res.send(respuesta);
+      } else {
+        res.redirect("/listarUsuarios");
+      }
+    });
+  });
+
+  app.get('/desconectarse', function(req, res) {
+    req.session.usuario = null;
+    res.send("Usuario desconectado");
+  });
+
 }
