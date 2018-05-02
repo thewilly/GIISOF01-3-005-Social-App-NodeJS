@@ -71,9 +71,30 @@ module.exports = function(app, swig, gestorBD) {
                 + "&tipoMensaje=alert-danger ");
       } else {
         req.session.usuario = usuarios[0].email;
-        res.redirect("/listaUsuarios");
+        res.redirect("/listarUsuarios");
       }
     });
   });
 
-};
+  app.get("/listarUsuarios", function(req, res) {
+    var pg = parseInt(req.query.pg); // Es String !!!
+    if (req.query.pg == null) { // Puede no venir el param
+      pg = 1;
+    }
+
+    var usuarios = gestorBD.obtenerUsuarios(pg, function(usuarios,total) {
+
+      var pgUltima = total / 5;
+      if (total % 5 > 0) { // Sobran decimales
+        pgUltima = pgUltima + 1;
+      }
+
+      var respuesta = swig.renderFile('views/blistaUsuarios.html', {
+        usuarios: usuarios,
+        pgActual: pg,
+        pgUltima: pgUltima
+      });
+      res.send(respuesta);
+    });
+  });
+}
