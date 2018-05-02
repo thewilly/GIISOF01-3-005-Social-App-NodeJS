@@ -81,7 +81,7 @@ module.exports = function(app, swig, gestorBD) {
     if (req.query.busqueda != null) {
       criterio = {
         '$or': [{
-          "nombre": {
+          "name": {
             $regex: ".*" + req.query.busqueda + ".*"
           }
         }, {
@@ -98,7 +98,7 @@ module.exports = function(app, swig, gestorBD) {
     }
 
 
-    var usuarios = gestorBD.obtenerUsuarios(pg, function(usuarios, total) {
+    var usuarios = gestorBD.obtenerUsuariosPg(criterio, pg, function(usuarios, total) {
 
       var criterio = {
         usuario: req.session.usuario
