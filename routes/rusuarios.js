@@ -100,26 +100,36 @@ module.exports = function(app, swig, gestorBD) {
     var usuarios = gestorBD.obtenerUsuariosPg(criterio, pg, function(usuarios,
             total) {
 
-      var criterio = {
+      criterio = {
         usuario: req.session.usuario
       }
-      var peticiones = gestorBD.obtenerPeticiones(criterio,
-              function(peticiones) {
+      var peticionesEnviadas = gestorBD.obtenerPeticiones(criterio, function(
+              peticionesEnviadas) {
 
-                var pgUltima = total / 5;
-                if (total % 5 > 0) { // Sobran decimales
-                  pgUltima = pgUltima + 1;
-                }
+         criterio = {
+          peticionId: req.session.usuario
+        }
 
-                var respuesta = swig.renderFile('views/blistaUsuarios.html', {
-                  usuarios: usuarios,
-                  peticiones: peticiones,
-                  boton: "true",
-                  pgActual: pg,
-                  pgUltima: pgUltima
-                });
-                res.send(respuesta);
-              });
+        var peticionesRecibidas = gestorBD.obtenerPeticiones(criterio, function(
+                peticionesRecibidas) {
+
+          var pgUltima = total / 5;
+          if (total % 5 > 0) { // Sobran decimales
+            pgUltima = pgUltima + 1;
+          }
+
+          var respuesta = swig.renderFile('views/blistaUsuarios.html', {
+            usuarios: usuarios,
+            peticionesEnviadas: peticionesEnviadas,
+            peticionesRecibidas: peticionesRecibidas,
+            actual: req.session.usuario,
+            boton: "true",
+            pgActual: pg,
+            pgUltima: pgUltima
+          });
+          res.send(respuesta);
+        });
+      });
     });
   });
 
