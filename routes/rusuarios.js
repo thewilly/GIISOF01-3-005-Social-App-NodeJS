@@ -150,9 +150,26 @@ module.exports = function(app, swig, gestorBD) {
       res.send(respuesta);
     });
   });
-  
-  app.get('/invitaciones/:id', function(req, res) {
-    
+
+  app.get('/invitaciones/accept', function(req, res) {
+    var peticion = {
+      usuario: req.query.usuario,
+      peticionId: req.query.peticionId
+    };
+
+    var peticionI = {
+      peticionId: req.query.usuario,
+      usuario: req.query.peticionId
+    };
+
+    gestorBD.aceptarPeticion(peticion, function(result) {
+      if (result == 'finished') {
+        gestorBD.aceptarPeticion(peticionI, function(resultI) {
+        });
+        res.redirect('/invitaciones');
+        console.log('Petición de amistad aceptada correctamente.');
+      }
+    });
   });
 
   app.get('/listarUsuarios/peticion/:email', function(req, res) {
@@ -160,12 +177,41 @@ module.exports = function(app, swig, gestorBD) {
       usuario: req.session.usuario,
       peticionId: req.params.email
     }
-    gestorBD.insertarPeticion(peticion, function(idPeticion) {
+
+    gestorBD.insertarPeticion(peticion, function(respuesta) {
       if (idPeticion == null) {
         res.send(respuesta);
       } else {
         res.redirect("/listarUsuarios");
       }
+    });
+  });
+
+  app.get('/amigos', function(req, res) {
+    var pg = parseInt(req.query.pg); // Es String !!!
+    if (req.query.pg == null) { // Puede no venir el param
+      pg = 1;
+    }
+    var criterio = {
+      usuarioA: req.session.usuario
+    }
+
+    var amigosPg = gestorBD.obtenerAmigosPg(criterio, pg, function(amigosPg,
+            total) {
+
+      console.log(amigosPg);
+
+      var pgUltima = total / 5;
+      if (total % 5 > 0) { // Sobran decimales
+        pgUltima = pgUltima + 1;
+      }
+
+      var respuesta = swig.renderFile('views/bAmigos.html', {
+        amigos: amigosPg,
+        pgActual: pg,
+        pgUltima: pgUltima
+      });
+      res.send(respuesta);
     });
   });
 

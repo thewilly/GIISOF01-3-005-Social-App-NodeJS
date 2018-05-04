@@ -1,20 +1,19 @@
 {% extends "base.html" %} {% block titulo %} Peticiones de amistad {%
 endblock %} {% block contenido_principal %}
-<h2>Invitaciones</h2>
+<h2>Amistades</h2>
 
 <div class="table-responsive">
 	<table class="table table-hover">
 		<thead>
 			<tr>
+				<th>Nombre</th>
 				<th>Email</th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for invitacion in invitaciones %}
+			{% for amigo in amigos %}
 			<tr>
-				<td>{{ invitacion.peticionId }}</td>
-				<td><a href="invitaciones/accept?peticionId={{ invitacion.peticionId }}&usuario={{ invitacion.usuario }}"
-					class="btn btn-primary">Agregar amigo</a></td>
+				<td>{{ amigo.usuarioB }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

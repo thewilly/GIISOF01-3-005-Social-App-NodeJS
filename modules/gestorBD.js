@@ -177,12 +177,25 @@ module.exports = {
       if (err) {
         funcionCallback(null);
       } else {
-        var collection = db.collection('amigos');
-        collection.insert(peticion, function(err, result) {
-          if (err) {
-            funcionCallback(null);
+        var amistad = {
+                usuarioA : peticion.usuario,
+                usuarioB : peticion.peticionId
+        };
+        
+        var amigos = db.collection('amigos');
+        amigos.insert(amistad, function(err, result) {
+          if(err) {
+            console.log(err);
+          }
+          db.close();
+        });
+        
+        var peticiones = db.collection('peticiones');
+        peticiones.remove(peticion, function(err, obj) {
+          if(err) {
+            console.log(err);
           } else {
-            funcionCallback(result.ops[0]._id);
+            funcionCallback('finished');
           }
           db.close();
         });
@@ -206,6 +219,29 @@ module.exports = {
         });
       }
 
+    });
+  },
+  
+
+    obtenerAmigosPg: function(criterio, pg, funcionCallback) {
+    this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+      if (err) {
+        funcionCallback(null);
+      } else {
+        var collection = db.collection('amigos');
+
+        collection.count(function(err, count) {
+          collection.find(criterio).skip((pg - 1) * 5).limit(5).toArray(
+                  function(err, canciones) {
+                    if (err) {
+                      funcionCallback(null);
+                    } else {
+                      funcionCallback(canciones, count);
+                    }
+                    db.close();
+                  });
+        });
+      }
     });
   }
 };
