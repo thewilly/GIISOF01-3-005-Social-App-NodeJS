@@ -150,6 +150,10 @@ module.exports = function(app, swig, gestorBD) {
       res.send(respuesta);
     });
   });
+  
+  app.get('/invitaciones/:id', function(req, res) {
+    
+  });
 
   app.get('/listarUsuarios/peticion/:email', function(req, res) {
     var peticion = {
