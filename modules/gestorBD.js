@@ -35,47 +35,45 @@ module.exports = {
         funcionCallback(null);
       } else {
         var collection = db.collection('usuarios');
-        
+
         collection.count(function(err, count) {
-          collection.find(criterio).skip((pg - 1) * 5).limit(5)
-              .toArray(function(err, canciones) {
-                if (err) {
-                  funcionCallback(null);
-                } else {
-                  funcionCallback(canciones, count);
-                }
-                db.close();
-              });
+          collection.find(criterio).skip((pg - 1) * 5).limit(5).toArray(
+                  function(err, canciones) {
+                    if (err) {
+                      funcionCallback(null);
+                    } else {
+                      funcionCallback(canciones, count);
+                    }
+                    db.close();
+                  });
         });
       }
 
     });
   },
-  
+
   obtenerUsuarios: function(pg, funcionCallback) {
     this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
       if (err) {
         funcionCallback(null);
       } else {
         var collection = db.collection('usuarios');
-        
+
         collection.count(function(err, count) {
-          collection.find().skip((pg - 1) * 5).limit(5)
-              .toArray(function(err, canciones) {
-                if (err) {
-                  funcionCallback(null);
-                } else {
-                  funcionCallback(canciones, count);
-                }
-                db.close();
-              });
+          collection.find().skip((pg - 1) * 5).limit(5).toArray(
+                  function(err, canciones) {
+                    if (err) {
+                      funcionCallback(null);
+                    } else {
+                      funcionCallback(canciones, count);
+                    }
+                    db.close();
+                  });
         });
       }
 
     });
   },
-  
-
 
   login: function(criterio, funcionCallback) {
 
@@ -134,12 +132,52 @@ module.exports = {
     });
   },
 
+  obtenerInvitacionesPg: function(criterio, pg, funcionCallback) {
+    this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+      if (err) {
+        funcionCallback(null);
+      } else {
+        var collection = db.collection('peticiones');
+
+        collection.count(function(err, count) {
+          collection.find(criterio).skip((pg - 1) * 5).limit(5).toArray(
+                  function(err, canciones) {
+                    if (err) {
+                      funcionCallback(null);
+                    } else {
+                      funcionCallback(canciones, count);
+                    }
+                    db.close();
+                  });
+        });
+      }
+    });
+  },
+
   insertarPeticion: function(peticion, funcionCallback) {
     this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
       if (err) {
         funcionCallback(null);
       } else {
         var collection = db.collection('peticiones');
+        collection.insert(peticion, function(err, result) {
+          if (err) {
+            funcionCallback(null);
+          } else {
+            funcionCallback(result.ops[0]._id);
+          }
+          db.close();
+        });
+      }
+    });
+  },
+  
+  aceptarPeticion: function(peticion, funcionCallback) {
+    this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+      if (err) {
+        funcionCallback(null);
+      } else {
+        var collection = db.collection('amigos');
         collection.insert(peticion, function(err, result) {
           if (err) {
             funcionCallback(null);
@@ -170,5 +208,4 @@ module.exports = {
 
     });
   }
-
 };

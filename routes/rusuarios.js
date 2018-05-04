@@ -64,7 +64,7 @@ module.exports = function(app, swig, gestorBD) {
       email: req.body.email,
       password: seguro
     }
-    gestorBD.login(criterio,function(usuarios) {
+    gestorBD.login(criterio, function(usuarios) {
       if (usuarios == null || usuarios.length == 0) {
         req.session.usuario = null;
         res.redirect("/identificarse" + "?mensaje=Email o password incorrecto"
@@ -97,8 +97,8 @@ module.exports = function(app, swig, gestorBD) {
       pg = 1;
     }
 
-
-    var usuarios = gestorBD.obtenerUsuariosPg(criterio, pg, function(usuarios, total) {
+    var usuarios = gestorBD.obtenerUsuariosPg(criterio, pg, function(usuarios,
+            total) {
 
       var criterio = {
         usuario: req.session.usuario
@@ -120,6 +120,34 @@ module.exports = function(app, swig, gestorBD) {
                 });
                 res.send(respuesta);
               });
+    });
+  });
+
+  app.get('/invitaciones', function(req, res) {
+    var pg = parseInt(req.query.pg); // Es String !!!
+    if (req.query.pg == null) { // Puede no venir el param
+      pg = 1;
+    }
+    var criterio = {
+      peticionId: req.session.usuario
+    }
+
+    var invitacionesPg = gestorBD.obtenerInvitacionesPg(criterio, pg, function(
+            invitacionesPg, total) {
+
+      console.log(invitacionesPg);
+
+      var pgUltima = total / 5;
+      if (total % 5 > 0) { // Sobran decimales
+        pgUltima = pgUltima + 1;
+      }
+
+      var respuesta = swig.renderFile('views/bPeticiones.html', {
+        invitaciones: invitacionesPg,
+        pgActual: pg,
+        pgUltima: pgUltima
+      });
+      res.send(respuesta);
     });
   });
 
