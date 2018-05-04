@@ -34,14 +34,14 @@ endblock %} {% block contenido_principal %}
 				<td>{{ usuario.name }}</td>
 				<td>{{ usuario.email }}</td> 
 				{% for peticion in peticionesEnviadas %} 
-					{% if usuario.email == peticion.peticionId %}
+					{% if usuario.email == peticion.aEmail %}
 						<td>Petición enviada</td>
 						{% set boton = "false" %}
 					{% endif %} 
 				{% endfor %}
 				
 				{% for peticion in peticionesRecibidas %} 
-					{% if usuario.email == peticion.usuario %}
+					{% if usuario.email == peticion.send %}
 						<td>Petición recibida</td>
 						{% set boton = "false" %}
 					{% endif %} 
@@ -54,7 +54,7 @@ endblock %} {% block contenido_principal %}
 
 
 				{%if boton == "true" %}
-					<td><a href="listarUsuarios/peticion/{{ usuario.email}}"
+					<td><a href="usuarios/peticion/create?email={{ usuario.email }}&name={{ usuario.name }}"
 						class="btn btn-primary">Agregar amigo</a></td>
 					
 				{% endif %} 

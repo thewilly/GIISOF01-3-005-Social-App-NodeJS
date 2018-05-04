@@ -171,28 +171,30 @@ module.exports = {
       }
     });
   },
-  
+
   aceptarPeticion: function(peticion, funcionCallback) {
     this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
       if (err) {
         funcionCallback(null);
       } else {
-        var amistad = {
-                usuarioA : peticion.usuario,
-                usuarioB : peticion.peticionId
-        };
-        
         var amigos = db.collection('amigos');
-        amigos.insert(amistad, function(err, result) {
-          if(err) {
+        amigos.insert(peticion, function(err, result) {
+          if (err) {
             console.log(err);
           }
           db.close();
         });
-        
+
+        var remove = {
+          send: peticion.amigoEmail,
+          sendName: peticion.amigoName,
+          aNombre: peticion.yoName,
+          aEmail: peticion.yoEmail
+        }
+
         var peticiones = db.collection('peticiones');
-        peticiones.remove(peticion, function(err, obj) {
-          if(err) {
+        peticiones.remove(remove, function(err, obj) {
+          if (err) {
             console.log(err);
           } else {
             funcionCallback('finished');
@@ -221,9 +223,8 @@ module.exports = {
 
     });
   },
-  
 
-    obtenerAmigosPg: function(criterio, pg, funcionCallback) {
+  obtenerAmigosPg: function(criterio, pg, funcionCallback) {
     this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
       if (err) {
         funcionCallback(null);

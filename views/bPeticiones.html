@@ -6,14 +6,14 @@ endblock %} {% block contenido_principal %}
 	<table class="table table-hover">
 		<thead>
 			<tr>
-				<th>Email</th>
+				<th>Nombre</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for invitacion in invitaciones %}
 			<tr>
-				<td>{{ invitacion.peticionId }}</td>
-				<td><a href="invitaciones/accept?peticionId={{ invitacion.peticionId }}&usuario={{ invitacion.usuario }}"
+				<td>{{ invitacion.sendName }}</td>
+				<td><a href="invitaciones/accept?email={{ invitacion.aEmail }}&name={{ invitacion.aNombre }}"
 					class="btn btn-primary">Agregar amigo</a></td>
 			</tr>
 			{% endfor %}
