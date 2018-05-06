@@ -43,7 +43,7 @@
       $("#tablaCuerpo").append(
               "<tr id="+amigosMostrar[i]._id+">"
                       + "<td><button class='btn' onclick=\"cargarMensajes('"
-                      + amigosMostrar[i].amigoEmail + "','"+amigosMostrar[i].amigoNombre+"')\">"
+                      + amigosMostrar[i].amigoEmail + "')\">"
                       + amigosMostrar[i].amigoNombre + "</button></td>"
                       + "<td>" + amigosMostrar[i].amigoEmail + "</td>"
                       + "</tr>");
@@ -67,7 +67,8 @@
           });
 
   var mensajes;
-  function cargarMensajes(amigo,name) {
+  var leng = 0;
+  function cargarMensajes(amigo) {
     $("#contenedor-principal").load("widget-conversacion.html");
     $.ajax({
       url: URLbase + "/mensajes?amigo=" + amigo,
@@ -79,10 +80,12 @@
       },
       success: function(respuesta) {
         mensajes = respuesta;
+        leng = mensajes.length;
         actualizarTablaMensajes(mensajes);
         $("#converWith").text(amigo);
       },
       error: function(error) {
+        clearInterval(intervalMId);
         $("#contenedor-principal").load("widget-login.html");
       }
     });

@@ -26,6 +26,32 @@
 </div>
 
 <script>
+  intervalMId = setInterval(function() {
+    compruebaMensajes();
+  }, 1000);
+
+  function compruebaMensajes() {
+    $.ajax({
+      url: URLbase + "/mensajes?amigo="+$("#converWith").text(),
+      type: "GET",
+      data: {},
+      dataType: 'json',
+      headers: {
+        "token": token
+      },
+      success: function(respuesta) {
+        mensajes = respuesta;
+        if (mensajes.length > leng) {
+          actualizarTablaMensajes(mensajes);
+        }
+      },
+      error: function(error) {
+        clearInterval(intervalMId);
+        $("#contenedor-principal").load("widget-login.html");
+      }
+    });
+  }
+
   function enviarMensaje() {
     $.ajax({
       url: URLbase + "/mensajes",
@@ -39,7 +65,7 @@
         "token": token
       },
       success: function(res) {
-
+        compruebaMensajes();
       },
       error: function(error) {
         $("#contenedor-principal").load("widget-login.html");
