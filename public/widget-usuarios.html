@@ -1,0 +1,47 @@
+<div id="widget-usuarios">
+	<button class="btn" onclick="cargarUsuarios()">Actualizar</button>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Email</th>
+				<th class="col-md-1"></th>
+			</tr>
+		</thead>
+		<tbody id="tablaCuerpo">
+
+		</tbody>
+	</table>
+</div>
+
+<script>
+  var canciones;
+  function cargarUsuarios() {
+    $.ajax({
+      url: URLbase + "/usuarios",
+      type: "GET",
+      data: {},
+      dataType: 'json',
+      headers: {
+        "token": token
+      },
+      success: function(respuesta) {
+        usuarios = respuesta;
+        actualizarTabla(usuarios);
+      },
+      error: function(error) {
+        $("#contenedor-principal").load("widget-login.html");
+      }
+    });
+  }
+  function actualizarTabla(usuariosMostrar) {
+    $("#tablaCuerpo").empty(); // Vaciar la tabla
+    for (i = 0; i < usuariosMostrar.length; i++) {
+      $("#tablaCuerpo").append(
+              "<tr id="+usuariosMostrar[i]._id+">" + "<td>"
+                      + usuariosMostrar[i].amigoNombre + "</td>" + "<td>"
+                      + usuariosMostrar[i].amigoEmail + "</td>" + "<td>");
+    }
+  }
+  cargarUsuarios();
+</script>

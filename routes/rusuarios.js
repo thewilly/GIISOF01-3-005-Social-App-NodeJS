@@ -119,8 +119,6 @@ module.exports = function(app, swig, gestorBD) {
         var peticionesEnviadas = gestorBD.obtenerPeticiones(criterio, function(
                 peticionesEnviadas) {
 
-
-
           criterio = {
             aEmail: req.session.usuario
           }
@@ -128,33 +126,31 @@ module.exports = function(app, swig, gestorBD) {
           var peticionesRecibidas = gestorBD.obtenerPeticiones(criterio,
                   function(peticionesRecibidas) {
 
-
-                    
                     criterio = {
-                    	personaEmail: req.session.usuario	
+                      personaEmail: req.session.usuario
                     }
 
-                    var amigos = gestorBD.obtenerAmigos(criterio,
-                            function(amigos) {
-                    
-	                    var pgUltima = total / 5;
-	                    if (total % 5 > 0) { // Sobran decimales
-	                      pgUltima = pgUltima + 1;
-	                    }
-	                    var respuesta = swig.renderFile('views/bUsuarios.html', {
-	                      usuarios: usuarios,
-	                      peticionesEnviadas: peticionesEnviadas,
-	                      peticionesRecibidas: peticionesRecibidas,
-	                      actual: req.session.usuario,
-	                      amigos: amigos,
-	                      boton: "true",
-	                      pgActual: pg,
-	                      pgUltima: pgUltima,
-	                      loggedUsser: req.session.usuario != null
-	                    });
-	                    res.send(respuesta);
-	                  });
-          });
+                    var amigos = gestorBD.obtenerAmigos(criterio, function(
+                            amigos) {
+
+                      var pgUltima = total / 5;
+                      if (total % 5 > 0) { // Sobran decimales
+                        pgUltima = pgUltima + 1;
+                      }
+                      var respuesta = swig.renderFile('views/bUsuarios.html', {
+                        usuarios: usuarios,
+                        peticionesEnviadas: peticionesEnviadas,
+                        peticionesRecibidas: peticionesRecibidas,
+                        actual: req.session.usuario,
+                        amigos: amigos,
+                        boton: "true",
+                        pgActual: pg,
+                        pgUltima: pgUltima,
+                        loggedUsser: req.session.usuario != null
+                      });
+                      res.send(respuesta);
+                    });
+                  });
         });
       });
     }
@@ -183,7 +179,7 @@ module.exports = function(app, swig, gestorBD) {
       console.log(pgUltima);
       console.log("TOTAL");
       console.log(total);
-      
+
       var respuesta = swig.renderFile('views/bPeticiones.html', {
         invitaciones: invitacionesPg,
         pgActual: pg,
@@ -278,7 +274,7 @@ module.exports = function(app, swig, gestorBD) {
       console.log(pgUltima);
       console.log("TOTAL");
       console.log(total);
-      
+
       var respuesta = swig.renderFile('views/bAmigos.html', {
         amigos: amigosPg,
         pgActual: pg,
