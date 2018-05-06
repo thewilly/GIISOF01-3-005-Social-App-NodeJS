@@ -52,9 +52,24 @@ app.use(expressSession({
   saveUninitialized: true
 }));
 
+app.use(express.static('public'));
+
 /* END OF APP PARAMETERS */
 
 /* BEGIN OF ROUTERS */
+
+//Router for users session
+var routerUsuarioSession = express.Router();
+routerUsuarioSession.use(function(req, res, next) {
+  console.log("routerUsuarioSession");
+  if (req.session.usuario) {
+    // dejamos correr la petición
+    next();
+  } else {
+    console.log("va a : " + req.session.destino);
+    res.redirect("/identificarse");
+  }
+});
 
 // Router for API
 var routerUsuarioToken = express.Router();
@@ -89,23 +104,17 @@ routerUsuarioToken.use(function(req, res, next) {
   }
 });
 
-// Router for users session
-var routerUsuarioSession = express.Router();
-routerUsuarioSession.use(function(req, res, next) {
-  console.log("routerUsuarioSession");
-  if (req.session.usuario) {
-    // dejamos correr la petición
-    next();
-  } else {
-    console.log("va a : " + req.session.destino);
-    res.redirect("/identificarse");
-  }
-});
-
+app.use('/usuarios', routerUsuarioSession);
+app.use('/invitaciones', routerUsuarioSession);
+app.use('/amigos', routerUsuarioSession);
+app.use('/api/usuarios', routerUsuarioToken);
+app.use('/api/mensajes', routerUsuarioToken);
 /* END OF ROUTERS */
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rapiusuarios.js")(app, gestorBD);
+// Must be last router always
+app.get('/', function (req, res) { res.redirect('/identificarse'); });
 
 app.use(function(err, req, res, next) {
   console.log("Error producido: " + err + " req: " + req + " res: " + res);

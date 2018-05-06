@@ -22,12 +22,18 @@ module.exports = function(app, swig, gestorBD) {
         email: req.body.email
       };
 
+      console.log('Registering email: ' + criterio.email);
+
       gestorBD.obtenerUsuarios(criterio, function(usuarios) {
-        if (usuarios != null || usuarios.length > 0) {
+        console.log(usuarios != null);
+        console.log(usuarios.length > 0);
+        if (usuarios.length > 0) {
+          console.log(usuarios);
           res.redirect("/registrarse"
                   + "?mensaje=Email ya registrado en el sistema"
                   + "&tipoMensaje=alert-danger ");
         } else {
+
           var usuario = {
             email: req.body.email,
             name: req.body.nombre,
@@ -73,65 +79,78 @@ module.exports = function(app, swig, gestorBD) {
   });
 
   app.get("/usuarios", function(req, res) {
-    var criterio = {};
-    if (req.query.busqueda != null) {
-      criterio = {
-        '$or': [{
-          "name": {
-            $regex: ".*" + req.query.busqueda + ".*"
-          }
-        }, {
-          "email": {
-            $regex: ".*" + req.query.busqueda + ".*"
-          }
-        }]
-      };
-    }
+    if (req.session.usuario == null) {
+      res.redirect('/identificarse');
+    } else {
 
-    var pg = parseInt(req.query.pg); // Es String !!!
-    if (req.query.pg == null) { // Puede no venir el param
-      pg = 1;
-    }
-
-    var usuarios = gestorBD.obtenerUsuariosPg(criterio, pg, function(usuarios,
-            total) {
-
-      criterio = {
-        send: req.session.usuario
+      var criterio = {};
+      if (req.query.busqueda != null) {
+        criterio = {
+          '$or': [{
+            "name": {
+              $regex: ".*" + req.query.busqueda + ".*"
+            }
+          }, {
+            "email": {
+              $regex: ".*" + req.query.busqueda + ".*"
+            }
+          }]
+        };
       }
-      var peticionesEnviadas = gestorBD.obtenerPeticiones(criterio, function(
-              peticionesEnviadas) {
-        
-        console.log("ENVIADAS");
-        console.log(peticionesEnviadas);
+
+      var pg = parseInt(req.query.pg); // Es String !!!
+      if (req.query.pg == null) { // Puede no venir el param
+        pg = 1;
+      }
+
+      var usuarios = gestorBD.obtenerUsuariosPg(criterio, pg, function(
+              usuarios, total) {
 
         criterio = {
-          aEmail: req.session.usuario
+          deEmail: req.session.usuario
         }
 
-        var peticionesRecibidas = gestorBD.obtenerPeticiones(criterio,
-                function(peticionesRecibidas) {
-          
-          console.log("RECIBIDAS");
-          console.log(peticionesRecibidas);
+        amigosCriterio = {
+          personaEmail: req.session.usuario
+        }
 
-                  var pgUltima = total / 5;
-                  if (total % 5 > 0) { // Sobran decimales
-                    pgUltima = pgUltima + 1;
-                  }
-                  var respuesta = swig.renderFile('views/bUsuarios.html', {
-                    usuarios: usuarios,
-                    peticionesEnviadas: peticionesEnviadas,
-                    peticionesRecibidas: peticionesRecibidas,
-                    actual: req.session.usuario,
-                    boton: "true",
-                    pgActual: pg,
-                    pgUltima: pgUltima
+        // Make the check for existing friends...
+
+        var peticionesEnviadas = gestorBD.obtenerPeticiones(criterio, function(
+                peticionesEnviadas) {
+
+          console.log("ENVIADAS");
+          console.log(peticionesEnviadas);
+
+          criterio = {
+            aEmail: req.session.usuario
+          }
+
+          var peticionesRecibidas = gestorBD.obtenerPeticiones(criterio,
+                  function(peticionesRecibidas) {
+
+                    console.log("RECIBIDAS");
+                    console.log(peticionesRecibidas);
+
+                    var pgUltima = total / 5;
+                    if (total % 5 > 0) { // Sobran decimales
+                      pgUltima = pgUltima + 1;
+                    }
+                    var respuesta = swig.renderFile('views/bUsuarios.html', {
+                      usuarios: usuarios,
+                      peticionesEnviadas: peticionesEnviadas,
+                      peticionesRecibidas: peticionesRecibidas,
+                      actual: req.session.usuario,
+                      boton: "true",
+                      pgActual: pg,
+                      pgUltima: pgUltima,
+                      loggedUsser: req.session.usuario != null
+                    });
+                    res.send(respuesta);
                   });
-                  res.send(respuesta);
-                });
+        });
       });
-    });
+    }
   });
 
   app.get('/invitaciones', function(req, res) {
@@ -146,7 +165,6 @@ module.exports = function(app, swig, gestorBD) {
     var invitacionesPg = gestorBD.obtenerInvitacionesPg(criterio, pg, function(
             invitacionesPg, total) {
 
-
       var pgUltima = total / 5;
       if (total % 5 > 0) { // Sobran decimales
         pgUltima = pgUltima + 1;
@@ -156,7 +174,8 @@ module.exports = function(app, swig, gestorBD) {
       var respuesta = swig.renderFile('views/bPeticiones.html', {
         invitaciones: invitacionesPg,
         pgActual: pg,
-        pgUltima: pgUltima
+        pgUltima: pgUltima,
+        loggedUsser: req.session.usuario != null
       });
       res.send(respuesta);
     });
@@ -164,37 +183,55 @@ module.exports = function(app, swig, gestorBD) {
 
   app.get('/invitaciones/accept', function(req, res) {
     var peticion = {
-            yoEmail: req.session.usuario,
-            yoName: req.session.name,
-            amigoEmail: req.query.name,
-            amigoName: req.query.email
+      deEmail: req.query.email,
+      deNombre: req.query.name,
+      aEmail: req.session.usuario,
+      aNombre: req.session.name
     };
 
-    var peticionI = {
-            amigoEmail: req.session.usuario,
-            amigoName: req.session.name,
-            yoEmail: req.query.aNombre,
-            yoName: req.query.aEmail
+    var amistad = {
+      personaEmail: req.session.usuario,
+      personaNombre: req.session.name,
+      amigoEmail: req.query.email,
+      amigoNombre: req.query.name
     };
-    console.log('INVITACION QUE ESTAMOS ACEPTANDO');
+
+    var amistadI = {
+      amigoEmail: req.session.usuario,
+      amigoNombre: req.session.name,
+      personaEmail: req.query.email,
+      personaNombre: req.query.name
+    };
+
+    console.log('PETICION QUE ESTAMOS ACEPTANDO');
     console.log(peticion);
-    
-    gestorBD.aceptarPeticion(peticion, function(result) {
-      if (result == 'finished') {
-        gestorBD.aceptarPeticion(peticionI, function(resultI) {
+
+    gestorBD.insertarAmigo(amistad, function(id) {
+      if (id == null) {
+        console.log('error');
+      } else {
+        gestorBD.insertarAmigo(amistadI, function(idI) {
+          if (idI == null) {
+            console.log('error');
+          } else {
+            gestorBD.eliminarInvitacion(peticion, function(success) {
+              if (success) {
+                res.redirect('/invitaciones');
+              }
+            });
+          }
         });
-        res.redirect('/invitaciones');
       }
     });
   });
 
-  app.get('/usuarios/peticion/create', function(req, res) {
+  app.get('/invitaciones/create', function(req, res) {
     var peticion = {
-      send: req.session.usuario,
-      sendName:  req.session.name,
-      aNombre: req.query.name,
-      aEmail: req.query.email
-    }
+      deEmail: req.session.usuario,
+      deNombre: req.session.name,
+      aEmail: req.query.email,
+      aNombre: req.query.name
+    };
 
     gestorBD.insertarPeticion(peticion, function(respuesta) {
       if (respuesta == null) {
@@ -211,12 +248,11 @@ module.exports = function(app, swig, gestorBD) {
       pg = 1;
     }
     var criterio = {
-      usuarioA: req.session.usuario
+      personaEmail: req.session.usuario
     }
 
     var amigosPg = gestorBD.obtenerAmigosPg(criterio, pg, function(amigosPg,
             total) {
-
 
       var pgUltima = total / 5;
       if (total % 5 > 0) { // Sobran decimales
@@ -226,7 +262,8 @@ module.exports = function(app, swig, gestorBD) {
       var respuesta = swig.renderFile('views/bAmigos.html', {
         amigos: amigosPg,
         pgActual: pg,
-        pgUltima: pgUltima
+        pgUltima: pgUltima,
+        loggedUsser: req.session.usuario != null
       });
       res.send(respuesta);
     });
@@ -234,8 +271,8 @@ module.exports = function(app, swig, gestorBD) {
 
   app.get('/desconectarse', function(req, res) {
     req.session.usuario = null;
-    req.session.usuario.name = null;
-    res.send("Usuario desconectado");
+    req.session.name = null;
+    res.redirect('/');
   });
 
 }

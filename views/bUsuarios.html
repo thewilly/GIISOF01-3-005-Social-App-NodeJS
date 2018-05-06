@@ -5,10 +5,10 @@ endblock %} {% block contenido_principal %}
 <!-- Búsqueda -->
 <div class="row">
 	<div id="custom-search-input ">
-		<form method="get" action="/listarUsuarios">
+		<form method="get" action="/usuarios">
 			<div
 				class="input-group col-xs-8 col-sm-6 col-md-4 col-lg-5 pull-right">
-				<input type="text" class="search-query form-control" 
+				<input type="text" class="search-query form-control"
 					placeholder="Nombre o email de usaurio" name="busqueda" /> <span
 					class="input-group-btn">
 					<button class="btn" type="submit">
@@ -32,33 +32,33 @@ endblock %} {% block contenido_principal %}
 			{% for usuario in usuarios %}
 			<tr>
 				<td>{{ usuario.name }}</td>
-				<td>{{ usuario.email }}</td> 
-				{% for peticion in peticionesEnviadas %} 
+				<td>{{ usuario.email }}</td>
+				{% for peticion in peticionesEnviadas %}
 					{% if usuario.email == peticion.aEmail %}
 						<td>Petición enviada</td>
 						{% set boton = "false" %}
-					{% endif %} 
+					{% endif %}
 				{% endfor %}
-				
-				{% for peticion in peticionesRecibidas %} 
-					{% if usuario.email == peticion.send %}
+
+				{% for peticion in peticionesRecibidas %}
+					{% if usuario.email == peticion.deEmail %}
 						<td>Petición recibida</td>
 						{% set boton = "false" %}
-					{% endif %} 
+					{% endif %}
 				{% endfor %}
 
 				{% if usuario.email == actual %}
 						<td></td>
 						{% set boton = "false" %}
-				{% endif %} 
+				{% endif %}
 
 
 				{%if boton == "true" %}
-					<td><a href="usuarios/peticion/create?email={{ usuario.email }}&name={{ usuario.name }}"
+					<td><a href="invitaciones/create?email={{ usuario.email }}&name={{ usuario.name }}"
 						class="btn btn-primary">Agregar amigo</a></td>
-					
-				{% endif %} 
-				
+
+				{% endif %}
+
 				{% set boton = "true" %}
 			</tr>
 			{% endfor %}
@@ -70,27 +70,27 @@ endblock %} {% block contenido_principal %}
 	<ul class="pagination">
 		<!-- Primera -->
 		<li class="page-item"><a class="page-link"
-			href="/listarUsuarios?pg=1">Primera</a></li>
+			href="/usuarios?pg=1">Primera</a></li>
 
 		<!-- Anterior (si la hay ) -->
 		{% if pgActual-1 >= 1 %}
 		<li class="page-item"><a class="page-link"
-			href="/listarUsuarios?pg={{ pgActual -1 }}">{{ pgActual -1 }}</a></li> {%
+			href="/usuarios?pg={{ pgActual -1 }}">{{ pgActual -1 }}</a></li> {%
 		endif %}
 
 		<!-- Actual -->
 		<li class="page-item active"><a class="page-link"
-			href="/listarUsuarios?pg={{ pgActual }}">{{ pgActual }}</a></li>
+			href="/usuarios?pg={{ pgActual }}">{{ pgActual }}</a></li>
 
 		<!-- Siguiente (si la hay) -->
 		{% if pgActual+1 <= pgUltima %}
 		<li class="page-item"><a class="page-link"
-			href="/listarUsuarios?pg={{ pgActual+1 }}">{{ pgActual+1 }}</a></li> {%
+			href="/usuarios?pg={{ pgActual+1 }}">{{ pgActual+1 }}</a></li> {%
 		endif %}
 
 		<!-- Última -->
 		<li class="page-item"><a class="page-link"
-			href="/listarUsuarios?pg={{ pgUltima }}">Última</a></li>
+			href="/usuarios?pg={{ pgUltima }}">Última</a></li>
 	</ul>
 </div>
 

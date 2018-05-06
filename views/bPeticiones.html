@@ -12,8 +12,8 @@ endblock %} {% block contenido_principal %}
 		<tbody>
 			{% for invitacion in invitaciones %}
 			<tr>
-				<td>{{ invitacion.sendName }}</td>
-				<td><a href="invitaciones/accept?email={{ invitacion.aEmail }}&name={{ invitacion.aNombre }}"
+				<td>{{ invitacion.deNombre }}</td>
+				<td><a href="invitaciones/accept?email={{ invitacion.deEmail }}&name={{ invitacion.deNombre }}"
 					class="btn btn-primary">Agregar amigo</a></td>
 			</tr>
 			{% endfor %}

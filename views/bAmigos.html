@@ -13,7 +13,8 @@ endblock %} {% block contenido_principal %}
 		<tbody>
 			{% for amigo in amigos %}
 			<tr>
-				<td>{{ amigo.usuarioB }}</td>
+				<td>{{ amigo.amigoNombre }}</td>
+				<td>{{ amigo.amigoEmail }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
@@ -24,27 +25,27 @@ endblock %} {% block contenido_principal %}
 	<ul class="pagination">
 		<!-- Primera -->
 		<li class="page-item"><a class="page-link"
-			href="/invitaciones?pg=1">Primera</a></li>
+			href="/amigos?pg=1">Primera</a></li>
 
 		<!-- Anterior (si la hay ) -->
 		{% if pgActual-1 >= 1 %}
 		<li class="page-item"><a class="page-link"
-			href="/invitaciones?pg={{ pgActual -1 }}">{{ pgActual -1 }}</a></li> {%
+			href="/amigos?pg={{ pgActual -1 }}">{{ pgActual -1 }}</a></li> {%
 		endif %}
 
 		<!-- Actual -->
 		<li class="page-item active"><a class="page-link"
-			href="/invitaciones?pg={{ pgActual }}">{{ pgActual }}</a></li>
+			href="/amigos?pg={{ pgActual }}">{{ pgActual }}</a></li>
 
 		<!-- Siguiente (si la hay) -->
 		{% if pgActual+1 <= pgUltima %}
 		<li class="page-item"><a class="page-link"
-			href="/invitaciones?pg={{ pgActual+1 }}">{{ pgActual+1 }}</a></li> {%
+			href="/amigos?pg={{ pgActual+1 }}">{{ pgActual+1 }}</a></li> {%
 		endif %}
 
 		<!-- Última -->
 		<li class="page-item"><a class="page-link"
-			href="/invitaciones?pg={{ pgUltima }}">Última</a></li>
+			href="/amigos?pg={{ pgUltima }}">Última</a></li>
 	</ul>
 </div>
 {% endblock %}
