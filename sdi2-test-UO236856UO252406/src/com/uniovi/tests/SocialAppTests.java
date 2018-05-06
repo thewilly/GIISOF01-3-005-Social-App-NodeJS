@@ -384,7 +384,7 @@ public class SocialAppTests {
 		PO_View.checkElement(driver, "id", "tablaCuerpo");
 
 	}
-	
+
 	/**
 	 * Inicio de sesión con datos inválidos.
 	 */
@@ -401,12 +401,27 @@ public class SocialAppTests {
 		PO_View.checkElement(driver, "id", "widget-login");
 
 	}
-	
+
 	/**
 	 * Acceder a la lista de amigos de un usuario, que al menos tenga tres amigos.
 	 */
 	@Test
 	public void PR0C2_1() {
+
+		// Registramos 2 nuevos usuarios
+		registrarUsuario("acebal", "acebal@email.com", "1234");
+		registrarUsuario("ortin", "ortin@email.com", "1234");
+
+		// Accedemos como un usuario en sesión a la aplicación
+		PO_HomeView.clickOption(driver, "registrarse", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
+
+		// Vamos al usuario con email p6@hotmail.com y le enviamos una petición
+		// de
+		// amistad.
+		List<WebElement> elementos = PO_View.checkElement(driver, "free",
+				"/html/body/div/div[2]/table/tbody/tr[2]/td[3]/a");
+		elementos.get(0).click();
 
 		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
 		driver.navigate().to("http://localhost:8081/cliente.html");
@@ -418,6 +433,5 @@ public class SocialAppTests {
 		PO_View.checkElement(driver, "id", "widget-login");
 
 	}
-	
 
 }
