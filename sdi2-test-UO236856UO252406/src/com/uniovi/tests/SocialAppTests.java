@@ -401,5 +401,23 @@ public class SocialAppTests {
 		PO_View.checkElement(driver, "id", "widget-login");
 
 	}
+	
+	/**
+	 * Acceder a la lista de amigos de un usuario, que al menos tenga tres amigos.
+	 */
+	@Test
+	public void PR0C2_1() {
+
+		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		// Rellenamos el campo email y password y nos logueamos
+		PO_LoginView.fillForm(driver, "pepe@mail.com", "12345");
+
+		// Checkear que no se ha logueado correctamente
+		PO_View.checkElement(driver, "id", "widget-login");
+
+	}
+	
 
 }
