@@ -41,9 +41,12 @@
     $("#tablaCuerpo").empty(); // Vaciar la tabla
     for (i = 0; i < amigosMostrar.length; i++) {
       $("#tablaCuerpo").append(
-              "<tr id="+amigosMostrar[i]._id+">" + "<td>"
-                      + amigosMostrar[i].amigoNombre + "</td>" + "<td>"
-                      + amigosMostrar[i].amigoEmail + "</td>" + "<td>");
+              "<tr id="+amigosMostrar[i]._id+">"
+                      + "<td><button class='btn' onclick=\"cargarMensajes('"
+                      + amigosMostrar[i].amigoEmail + "')\">"
+                      + amigosMostrar[i].amigoNombre + "</button></td>"
+                      + "<td>" + amigosMostrar[i].amigoEmail + "</td>"
+                      + "</tr>");
     }
   }
   cargarUsuarios();
@@ -62,4 +65,33 @@
             }
             actualizarTabla(amigosFiltrados);
           });
+
+  var mensajes;
+  function cargarMensajes(amigo) {
+    $("#contenedor-principal").load("widget-conversacion.html");
+    $.ajax({
+      url: URLbase + "/mensajes?amigo=" + amigo,
+      type: "GET",
+      data: {},
+      dataType: 'json',
+      headers: {
+        "token": token
+      },
+      success: function(respuesta) {
+        mensajes = respuesta;
+        actualizarTablaMensajes(mensajes);
+      },
+      error: function(error) {
+        $("#contenedor-principal").load("widget-login.html");
+      }
+    });
+  }
+  function actualizarTablaMensajes(mensajesMostrar) {
+    $("#tablaConver").empty(); // Vaciar la tabla
+    for (i = 0; i < mensajesMostrar.length; i++) {
+      $("#tablaConver").append(
+              "<tr id="+mensajesMostrar[i]._id+">" + "<td>"
+                      + mensajesMostrar[i].texto + "</td>");
+    }
+  }
 </script>
