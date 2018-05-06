@@ -42,7 +42,14 @@ endblock %} {% block contenido_principal %}
 
 				{% for peticion in peticionesRecibidas %}
 					{% if usuario.email == peticion.deEmail %}
-						<td>PeticiÃ³n recibida</td>
+						<td>Petición recibida</td>
+						{% set boton = "false" %}
+					{% endif %}
+				{% endfor %}
+				
+				{% for amigo in amigos %}
+					{% if usuario.email == amigo.amigoEmail %}
+						<td>Ya sois amigos</td>
 						{% set boton = "false" %}
 					{% endif %}
 				{% endfor %}
