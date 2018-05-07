@@ -10,7 +10,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
@@ -21,7 +20,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.uniovi.tests.pageobjects.PO_HomeView;
 import com.uniovi.tests.pageobjects.PO_LoginView;
-import com.uniovi.tests.pageobjects.PO_NavView;
 import com.uniovi.tests.pageobjects.PO_RegisterView;
 import com.uniovi.tests.pageobjects.PO_UsersView;
 import com.uniovi.tests.pageobjects.PO_View;
@@ -36,18 +34,26 @@ import com.uniovi.tests.utils.SeleniumUtils;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SocialAppTests {
 
-	// static String PathFirefox =
-	// "/Applications/FirefoxSDI.app/Contents/MacOS/firefox-bin";
-	// static WebDriver driver = getDriver( PathFirefox );
-	// static String URL = "http://localhost:8081";
-
-	static String PathFirefox = "D:\\Escritorio\\Firefox46.win\\FirefoxPortable.exe";
-
-	static WebDriver driver = getDriver(PathFirefox);
+	/*************************************************************************************
+	 *                                                                                   *
+	 *                        macOS configuration properties.                            *
+	 *                                                                                   *
+	 *************************************************************************************/
+	static String PathFirefox = "/Applications/FirefoxSDI.app/Contents/MacOS/firefox-bin";
+	static WebDriver driver = getDriver( PathFirefox );
 	static String URL = "http://localhost:8081";
 
+	/*************************************************************************************
+	 *                                                                                   *
+	 *                      Windows configuration properties.                            *
+	 *                                                                                   *
+	 *************************************************************************************/
+	//static String PathFirefox = "D:\\Escritorio\\Firefox46.win\\FirefoxPortable.exe";
+	//static WebDriver driver = getDriver(PathFirefox);
+	//static String URL = "http://localhost:8081";
+
 	public static WebDriver getDriver(String PathFirefox) {
-		// Firefox (Versión 46.0) sin geckodriver para Selenium 2.x.
+		// Firefox (Versiï¿½n 46.0) sin geckodriver para Selenium 2.x.
 		System.setProperty("webdriver.firefox.bin", PathFirefox);
 		WebDriver driver = new FirefoxDriver();
 		return driver;
@@ -61,20 +67,20 @@ public class SocialAppTests {
 	}
 
 	private void registrarUsuario(String name, String email, String pass) {
-		// Vamos a la página de registro (signup)
+		// Vamos a la pï¿½gina de registro (signup)
 		PO_HomeView.clickOption(driver, "registrarse", "class", "btn btn-primary");
 
-		// Rellenamos el formulario con datos válidos.
+		// Rellenamos el formulario con datos vï¿½lidos.
 		PO_RegisterView.fillForm(driver, email, name, pass, pass);
 
 		// Comprobamos que se ha registrado el usuario.
 		PO_View.checkElement(driver, "text", "Nuevo usuario registrado");
 	}
 
-	private void añadadir3AmigosPepe() {
-		// Registramos a acebal en la aplicación
+	private void aniadadir3AmigosPepe() {
+		// Registramos a acebal en la aplicaciï¿½n
 		registrarUsuario("acebal", "acebal@mail.com", "1234");
-		// Accedemos como acebal a la aplicación y le mandamos una petición a pepe
+		// Accedemos como acebal a la aplicaciï¿½n y le mandamos una peticiï¿½n a pepe
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "acebal@mail.com", "1234");
 
@@ -82,28 +88,28 @@ public class SocialAppTests {
 				"/html/body/div/div[2]/table/tbody/tr[1]/td[3]/a");
 		elementos.get(0).click();
 
-		// Registramos a ortin en la aplicación
+		// Registramos a ortin en la aplicaciï¿½n
 		PO_HomeView.clickOption(driver, "desconectarse", "class", "btn btn-primary");
 		registrarUsuario("ortin", "ortin@mail.com", "1234");
-		// Accedemos como ortin a la aplicación y le mandamos una petición a pepe
+		// Accedemos como ortin a la aplicaciï¿½n y le mandamos una peticiï¿½n a pepe
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "ortin@mail.com", "1234");
 
 		elementos = PO_View.checkElement(driver, "free", "/html/body/div/div[2]/table/tbody/tr[1]/td[3]/a");
 		elementos.get(0).click();
 
-		// Registramos a miguel en la aplicación
+		// Registramos a miguel en la aplicaciï¿½n
 		PO_HomeView.clickOption(driver, "desconectarse", "class", "btn btn-primary");
 		registrarUsuario("miguel", "miguel@mail.com", "1234");
 
-		// Accedemos como miguel a la aplicación y le mandamos una petición a pepe
+		// Accedemos como miguel a la aplicaciï¿½n y le mandamos una peticiï¿½n a pepe
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "miguel@mail.com", "1234");
 
 		elementos = PO_View.checkElement(driver, "free", "/html/body/div/div[2]/table/tbody/tr[1]/td[3]/a");
 		elementos.get(0).click();
 
-		// Accedemos a la aplicación como pepe
+		// Accedemos a la aplicaciï¿½n como pepe
 		PO_HomeView.clickOption(driver, "desconectarse", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
 
@@ -124,13 +130,13 @@ public class SocialAppTests {
 
 	private void envia3Mensajes() {
 
-		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		// Accedemos a la pï¿½gina de inicio de sesiï¿½n de la aplicaciï¿½n JQUERY
 		driver.navigate().to("http://localhost:8081/cliente.html");
 
 		// Rellenamos el campo email y password y nos logueamos
 		PO_LoginView.fillForm(driver, "acebal@mail.com", "1234");
 
-		// Accedemos a la conversación con acebal
+		// Accedemos a la conversaciï¿½n con acebal
 		List<WebElement> elementos = PO_View.checkElement(driver, "text", "Pepe");
 		elementos.get(0).click();
 
@@ -180,14 +186,14 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Registro de usuarios con datos válidos.
+	 * Registro de usuarios con datos vï¿½lidos.
 	 */
 	@Test
 	public void PR01_1() {
-		// Vamos a la página de registro (signup)
+		// Vamos a la pï¿½gina de registro (signup)
 		PO_HomeView.clickOption(driver, "registrarse", "class", "btn btn-primary");
 
-		// Rellenamos el formulario con datos válidos.
+		// Rellenamos el formulario con datos vï¿½lidos.
 		PO_RegisterView.fillForm(driver, "pepe@mail.com", "Pepe", "1234", "1234");
 
 		// Comprobamos que se ha registrado el usuario.
@@ -195,29 +201,29 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Registro de usuarios con datos inválidos (repetición de contraseña inválida y
+	 * Registro de usuarios con datos invï¿½lidos (repeticiï¿½n de contraseï¿½a invï¿½lida y
 	 * usuario ya registrado).
 	 */
 	@Test
 	public void PR01_2() {
 
-		// PROBAMOS LA VALIDACIÓN DE CONTRASEÑA
-		// Vamos a la página de registro (signup)
+		// PROBAMOS LA VALIDACIï¿½N DE CONTRASEï¿½A
+		// Vamos a la pï¿½gina de registro (signup)
 		PO_HomeView.clickOption(driver, "registrarse", "class", "btn btn-primary");
 
-		// Rellenamos el formulario con datos válidos.
+		// Rellenamos el formulario con datos vï¿½lidos.
 		PO_RegisterView.fillForm(driver, "pepe@mail.com", "Pepe", "1234", "4321");
 
 		// Comprobamos que se ha registrado el usuario.
-		PO_View.checkElement(driver, "text", "Las contraseñas no coinciden");
+		PO_View.checkElement(driver, "text", "Las contraseÃ±as no coinciden");
 
-		// PROBAMOS LA VALIDACIÓN DE EMAIL UNICO EN EL SISTEMA CON PEPE QUE YA
-		// ESTÁ REGISTRADO
+		// PROBAMOS LA VALIDACIï¿½N DE EMAIL UNICO EN EL SISTEMA CON PEPE QUE YA
+		// ESTï¿½ REGISTRADO
 
-		// Vamos a la página de registro (signup)
+		// Vamos a la pï¿½gina de registro (signup)
 		PO_HomeView.clickOption(driver, "registrarse", "class", "btn btn-primary");
 
-		// Rellenamos el formulario con datos válidos.
+		// Rellenamos el formulario con datos vï¿½lidos.
 		PO_RegisterView.fillForm(driver, "pepe@mail.com", "Pepe", "1234", "1234");
 
 		// Comprobamos que se ha registrado el usuario.
@@ -225,29 +231,29 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Inicio de sesión con datos válidos.
+	 * Inicio de sesiï¿½n con datos vï¿½lidos.
 	 */
 	@Test
 	public void PR02_1() {
-		// Vamos a la página de autenticación (login)
+		// Vamos a la pï¿½gina de autenticaciï¿½n (login)
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 
-		// Rellenamos el formulario de autenticación con datos válidos.
+		// Rellenamos el formulario de autenticaciï¿½n con datos vï¿½lidos.
 		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
 
 		// Comprobamos que el login fue correcto.
-		PO_View.checkElement(driver, "text", "Usuarios de la aplicación");
+		PO_View.checkElement(driver, "text", "Usuarios de la aplicaciÃ³n");
 	}
 
 	/**
-	 * Inicio de sesión con datos inválidos (usuario no existe en la aplicación).
+	 * Inicio de sesiï¿½n con datos invï¿½lidos (usuario no existe en la aplicaciï¿½n).
 	 */
 	@Test
 	public void PR02_2() {
-		// Vamos a la página de autenticación (login)
+		// Vamos a la pï¿½gina de autenticaciï¿½n (login)
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 
-		// Rellenamos el formulario de autenticación con datos NO válidos.
+		// Rellenamos el formulario de autenticaciï¿½n con datos NO vï¿½lidos.
 		PO_LoginView.fillForm(driver, "clara@oswin.oswald", "tardis");
 
 		// Comprobamos que el login no fue correcto.
@@ -255,43 +261,43 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Acceso al listado de usuarios desde el ususario en sesión.
+	 * Acceso al listado de usuarios desde el ususario en sesiï¿½n.
 	 */
 	@Test
 	public void PR03_1() {
-		// Vamos a la página de autenticación (login)
+		// Vamos a la pï¿½gina de autenticaciï¿½n (login)
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 
-		// Rellenamos el formulario de autenticación con datos válidos.
+		// Rellenamos el formulario de autenticaciï¿½n con datos vï¿½lidos.
 		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
 
 		// Comprobamos que el login fue correcto y que en efecto se visualiza la
-		// lista de usuarios de la aplicación.
-		PO_View.checkElement(driver, "h2", "Usuarios de la aplicación");
+		// lista de usuarios de la aplicaciï¿½n.
+		PO_View.checkElement(driver, "h2", "Usuarios de la aplicaciÃ³n");
 
 		// Nos movemos fuera de la ruta /usuarios.
 		PO_HomeView.clickOption(driver, "invitaciones", "free", "//h2[contains(text(), 'Invitaciones')]");
 
 		// Clicamos en listado de todos sus peticiones.
-		PO_HomeView.clickOption(driver, "usuarios", "free", "//h2[contains(text(), 'Usuarios de la aplicación')]");
+		PO_HomeView.clickOption(driver, "usuarios", "free", "//h2[contains(text(), 'Usuarios de la aplicaciÃ³n')]");
 	}
 
 	/**
 	 * Intento de acceso con URL desde un usuario no identificado al listado de
-	 * usuarios de un usuario en sesión.
+	 * usuarios de un usuario en sesiï¿½n.
 	 */
 	@Test
 	public void PR03_2() {
 
-		// Intentamos acceder a la página de listado sin estar autenticados.
+		// Intentamos acceder a la pï¿½gina de listado sin estar autenticados.
 		driver.navigate().to("http://localhost:8081/usuarios");
 
-		// Comprobamos que nos redirige a la página de logeo.
-		PO_View.checkElement(driver, "text", "Identificación de usuario");
+		// Comprobamos que nos redirige a la pï¿½gina de logeo.
+		PO_View.checkElement(driver, "text", "IdentificaciÃ³n de usuario");
 	}
 
 	/**
-	 * Realizar una búsqueda válida en el listado de usuarios desde un usuario en
+	 * Realizar una bï¿½squeda vï¿½lida en el listado de usuarios desde un usuario en
 	 * sesion.
 	 */
 	@Test
@@ -300,17 +306,17 @@ public class SocialAppTests {
 		// Registramos un usuario que podamos buscar en la lista de usuarios
 		registrarUsuario("ana", "ana@email.com", "1234");
 
-		// Accedemos como un usuario en sesión a la aplicación
+		// Accedemos como un usuario en sesiï¿½n a la aplicaciï¿½n
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
 
-		// En el campo de búsqueda introducimos el criterio a buscar
+		// En el campo de bï¿½squeda introducimos el criterio a buscar
 		WebElement searchField = driver.findElement(By.name("busqueda"));
 		searchField.click();
 		searchField.clear();
 		searchField.sendKeys("ana");
 
-		// Clicamos el botón de enviar query
+		// Clicamos el botï¿½n de enviar query
 		By boton = By.className("btn");
 		driver.findElement(boton).click();
 	}
@@ -321,23 +327,23 @@ public class SocialAppTests {
 	 */
 	@Test
 	public void PR04_2() {
-		// Intentamos acceder a la página de búsqueda sin estar autenticados.
+		// Intentamos acceder a la pï¿½gina de bï¿½squeda sin estar autenticados.
 		driver.navigate().to("http://localhost:8081/usuarios?busqueda=ana");
 
-		// Comprobamos que nos redirige a la página de logeo.
-		PO_View.checkElement(driver, "text", "Identificación de usuario");
+		// Comprobamos que nos redirige a la pï¿½gina de logeo.
+		PO_View.checkElement(driver, "text", "IdentificaciÃ³n de usuario");
 	}
 
 	/**
-	 * Enviar una petición de amistad a un usario de forma valida.
+	 * Enviar una peticiï¿½n de amistad a un usario de forma valida.
 	 */
 	@Test
 	public void PR05_1() {
-		// Accedemos como un usuario en sesión a la aplicación
+		// Accedemos como un usuario en sesiï¿½n a la aplicaciï¿½n
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
 
-		// Vamos al usuario con email p6@hotmail.com y le enviamos una petición
+		// Vamos al usuario con email p6@hotmail.com y le enviamos una peticiï¿½n
 		// de
 		// amistad.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free",
@@ -348,12 +354,12 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Enviar una petición de amistad a un usuario al que le habiamos enviado la
-	 * invitación previamente. No debería dejarnos enviar la invitación.
+	 * Enviar una peticiï¿½n de amistad a un usuario al que le habiamos enviado la
+	 * invitaciï¿½n previamente. No deberï¿½a dejarnos enviar la invitaciï¿½n.
 	 */
 	@Test
 	public void PR05_2() {
-		// Accedemos como un usuario en sesión a la aplicación
+		// Accedemos como un usuario en sesiï¿½n a la aplicaciï¿½n
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
 
@@ -361,7 +367,7 @@ public class SocialAppTests {
 		// .
 		PO_View.checkElement(driver, "free", "/html/body/div/div[2]/table/tbody/tr[2]/td[3]");
 		try {
-			// Comprobamos que ya no está el botón para enviar la petición de
+			// Comprobamos que ya no estï¿½ el botï¿½n para enviar la peticiï¿½n de
 			// amistad.
 			PO_View.checkElement(driver, "free", "/html/body/div/div[2]/table/tbody/tr[2]/td[3]/a");
 			fail();
@@ -372,12 +378,12 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Listar las invitaciones recividas por un usuario, realizar la comprobación
+	 * Listar las invitaciones recividas por un usuario, realizar la comprobaciï¿½n
 	 * con una lista que al menos tenga un usaurio.
 	 */
 	@Test
 	public void PR06_1() {
-		// Accedemos como un usuario en sesión a la aplicación
+		// Accedemos como un usuario en sesiï¿½n a la aplicaciï¿½n
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "ana@email.com", "1234");
 
@@ -390,26 +396,26 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Acceptar una invitación recivida.
+	 * Acceptar una invitaciï¿½n recivida.
 	 */
 	@Test
 	public void PR07_1() {
-		// Accedemos como un usuario en sesión a la aplicación
+		// Accedemos como un usuario en sesiï¿½n a la aplicaciï¿½n
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "ana@email.com", "1234");
 
 		// Clicamos en listado de todos sus peticiones.
 		PO_HomeView.clickOption(driver, "invitaciones", "free", "//h2[contains(text(), 'Invitaciones')]");
 
-		// Vamos al usuario con email p6@hotmail.com y le enviamos una petición
+		// Vamos al usuario con email p6@hotmail.com y le enviamos una peticiï¿½n
 		// de
-		// amistad. A este usuario le acabamos de mandar una petición.
+		// amistad. A este usuario le acabamos de mandar una peticiï¿½n.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free",
 				"/html/body/div/div[1]/table/tbody/tr/td[2]/a");
 		elementos.get(0).click();
 
 		try {
-			// Comprobamos que ya no está el botón para aceptar la petición de
+			// Comprobamos que ya no estï¿½ el botï¿½n para aceptar la peticiï¿½n de
 			// amistad.
 			PO_View.checkElement(driver, "free", "/html/body/div/div[1]/table/tbody/tr/td[2]/a");
 			fail();
@@ -419,12 +425,12 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Listar los amigos de un usario. Realizar la comprobación con al menos un
+	 * Listar los amigos de un usario. Realizar la comprobaciï¿½n con al menos un
 	 * amigo.
 	 */
 	@Test
 	public void PR08_1() {
-		// Accedemos como un usuario en sesión a la aplicación
+		// Accedemos como un usuario en sesiï¿½n a la aplicaciï¿½n
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "ana@email.com", "1234");
 
@@ -434,18 +440,18 @@ public class SocialAppTests {
 		// Checkear que existen usuarios en la lista
 		PO_View.checkElement(driver, "free", "/html/body/div/div[1]/table/tbody/tr/td[1]");
 
-		// Checkeamos que además dicho usuario es pepe, la amistad que acabamos
+		// Checkeamos que ademï¿½s dicho usuario es pepe, la amistad que acabamos
 		// de crear para ana.
 		PO_View.checkElement(driver, "free", "//table/tbody/tr/td[contains(text(), 'Pepe')]");
 	}
 
 	/**
-	 * Inicio de sesión con datos válidos.
+	 * Inicio de sesiï¿½n con datos vï¿½lidos.
 	 */
 	@Test
 	public void PR0C1_1() {
 
-		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		// Accedemos a la pï¿½gina de inicio de sesiï¿½n de la aplicaciï¿½n JQUERY
 		driver.navigate().to("http://localhost:8081/cliente.html");
 
 		// Rellenamos el campo email y password y nos logueamos
@@ -459,12 +465,12 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Inicio de sesión con datos inválidos.
+	 * Inicio de sesiï¿½n con datos invï¿½lidos.
 	 */
 	@Test
 	public void PR0C1_2() {
 
-		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		// Accedemos a la pï¿½gina de inicio de sesiï¿½n de la aplicaciï¿½n JQUERY
 		driver.navigate().to("http://localhost:8081/cliente.html");
 
 		// Rellenamos el campo email y password y nos logueamos
@@ -480,10 +486,10 @@ public class SocialAppTests {
 	 */
 	@Test
 	public void PR0C2_1() {
-		// Añadimos 3 amigos a pepe
-		añadadir3AmigosPepe();
+		// Aï¿½adimos 3 amigos a pepe
+		aniadadir3AmigosPepe();
 
-		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		// Accedemos a la pï¿½gina de inicio de sesiï¿½n de la aplicaciï¿½n JQUERY
 		driver.navigate().to("http://localhost:8081/cliente.html");
 
 		// Rellenamos el campo email y password y nos logueamos
@@ -505,7 +511,7 @@ public class SocialAppTests {
 	@Test
 	public void PR0C2_2() {
 
-		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		// Accedemos a la pï¿½gina de inicio de sesiï¿½n de la aplicaciï¿½n JQUERY
 		driver.navigate().to("http://localhost:8081/cliente.html");
 
 		// Rellenamos el campo email y password y nos logueamos
@@ -522,7 +528,7 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Acceder a la lista de mensajes de un amigo “chat”, la lista debe contener al
+	 * Acceder a la lista de mensajes de un amigo ï¿½chatï¿½, la lista debe contener al
 	 * menos tres mensajes.
 	 */
 	@Test
@@ -531,17 +537,17 @@ public class SocialAppTests {
 		// Creamos los mensajes
 		envia3Mensajes();
 
-		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		// Accedemos a la pï¿½gina de inicio de sesiï¿½n de la aplicaciï¿½n JQUERY
 		driver.navigate().to("http://localhost:8081/cliente.html");
 
 		// Rellenamos el campo email y password y nos logueamos
 		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
 
-		// Accedemos a la conversación con acebal
+		// Accedemos a la conversaciï¿½n con acebal
 		List<WebElement> elementos = PO_View.checkElement(driver, "text", "acebal");
 		elementos.get(0).click();
 
-		// Comprobamos que accedemos correctamente a la conversación
+		// Comprobamos que accedemos correctamente a la conversaciï¿½n
 		PO_View.checkElement(driver, "id", "tablaConver");
 		PO_View.checkElement(driver, "text", "acebal@mail.com");
 
@@ -553,19 +559,19 @@ public class SocialAppTests {
 	}
 
 	/**
-	 * Acceder a la lista de mensajes de un amigo “chat” y crear un nuevo mensaje,
+	 * Acceder a la lista de mensajes de un amigo ï¿½chatï¿½ y crear un nuevo mensaje,
 	 * validar que el mensaje aparece en la lista de mensajes.
 	 */
 	@Test
 	public void PR0C4_1() {
 
-		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		// Accedemos a la pï¿½gina de inicio de sesiï¿½n de la aplicaciï¿½n JQUERY
 		driver.navigate().to("http://localhost:8081/cliente.html");
 
 		// Rellenamos el campo email y password y nos logueamos
 		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
 
-		// Accedemos a la conversación con acebal
+		// Accedemos a la conversaciï¿½n con acebal
 		List<WebElement> elementos = PO_View.checkElement(driver, "text", "acebal");
 		elementos.get(0).click();
 
