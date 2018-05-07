@@ -140,16 +140,14 @@ public class SocialAppTests {
 		elementos = PO_View.checkElement(driver, "text", "Enviar");
 		elementos.get(0).click();
 
-		// Escribimos el primer mensaje
+		// Escribimos el segundo mensaje
 		PO_UsersView.sendMessage(driver, "Que tal");
-		// Enviamos el primer mensaje
-		elementos = PO_View.checkElement(driver, "text", "Enviar");
+		// Enviamos el segundo mensaje
 		elementos.get(0).click();
 
-		// Escribimos el primer mensaje
+		// Escribimos el tercer mensaje
 		PO_UsersView.sendMessage(driver, "Molas mucho");
-		// Enviamos el primer mensaje
-		elementos = PO_View.checkElement(driver, "text", "Enviar");
+		// Enviamos el tercer mensaje
 		elementos.get(0).click();
 
 	}
