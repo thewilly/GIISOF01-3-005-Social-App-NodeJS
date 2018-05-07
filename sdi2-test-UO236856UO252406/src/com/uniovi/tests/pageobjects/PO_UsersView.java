@@ -19,30 +19,34 @@ import org.openqa.selenium.WebElement;
  * @author
  * @version
  */
-public class PO_LoginView extends PO_NavView {
+public class PO_UsersView extends PO_NavView {
+
 
 	/**
+	 * 
 	 * @param driver
-	 * @param user
-	 * @param password
+	 * @param texto
 	 */
-	public static void fillForm(WebDriver driver, String user, String password) {
+	public static void fillForm(WebDriver driver, String texto) {
 		// Enter the user name field.
-		WebElement userField = driver.findElement(By.name("email"));
+		WebElement userField = driver.findElement(By.id("filtro-nombre"));
 		userField.click();
 		userField.clear();
-		userField.sendKeys(user);
-
-		// Enter the password field.
-		WebElement passField = driver.findElement(By.name("password"));
-		passField.click();
-		passField.clear();
-		passField.sendKeys(password);
-
-		// Clicking the login button.
-		By boton = By.className("btn");
-		driver.findElement(boton).click();
+		userField.sendKeys(texto);
 
 	}
+
+	/**
+	 * 
+	 * @param driver
+	 * @param string
+	 */
+	public static void sendMessage(WebDriver driver, String string) {
+		WebElement userField = driver.findElement(By.id("mensajeTexto"));
+		userField.click();
+		userField.clear();
+		userField.sendKeys(string);
+	}
+	
 
 }

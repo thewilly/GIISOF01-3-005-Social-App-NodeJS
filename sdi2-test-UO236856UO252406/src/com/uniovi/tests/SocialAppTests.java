@@ -23,7 +23,9 @@ import com.uniovi.tests.pageobjects.PO_HomeView;
 import com.uniovi.tests.pageobjects.PO_LoginView;
 import com.uniovi.tests.pageobjects.PO_NavView;
 import com.uniovi.tests.pageobjects.PO_RegisterView;
+import com.uniovi.tests.pageobjects.PO_UsersView;
 import com.uniovi.tests.pageobjects.PO_View;
+import com.uniovi.tests.utils.SeleniumUtils;
 
 /**
  * Instance of NotaneitorTests.java
@@ -120,6 +122,38 @@ public class SocialAppTests {
 
 	}
 
+	private void envia3Mensajes() {
+
+		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		// Rellenamos el campo email y password y nos logueamos
+		PO_LoginView.fillForm(driver, "acebal@mail.com", "1234");
+
+		// Accedemos a la conversación con acebal
+		List<WebElement> elementos = PO_View.checkElement(driver, "text", "Pepe");
+		elementos.get(0).click();
+
+		// Escribimos el primer mensaje
+		PO_UsersView.sendMessage(driver, "Hola");
+		// Enviamos el primer mensaje
+		elementos = PO_View.checkElement(driver, "text", "Enviar");
+		elementos.get(0).click();
+
+		// Escribimos el primer mensaje
+		PO_UsersView.sendMessage(driver, "Que tal");
+		// Enviamos el primer mensaje
+		elementos = PO_View.checkElement(driver, "text", "Enviar");
+		elementos.get(0).click();
+
+		// Escribimos el primer mensaje
+		PO_UsersView.sendMessage(driver, "Molas mucho");
+		// Enviamos el primer mensaje
+		elementos = PO_View.checkElement(driver, "text", "Enviar");
+		elementos.get(0).click();
+
+	}
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -151,7 +185,6 @@ public class SocialAppTests {
 	 * Registro de usuarios con datos válidos.
 	 */
 	@Test
-
 	public void PR01_1() {
 		// Vamos a la página de registro (signup)
 		PO_HomeView.clickOption(driver, "registrarse", "class", "btn btn-primary");
@@ -168,7 +201,6 @@ public class SocialAppTests {
 	 * usuario ya registrado).
 	 */
 	@Test
-	@Ignore
 	public void PR01_2() {
 
 		// PROBAMOS LA VALIDACIÓN DE CONTRASEÑA
@@ -198,7 +230,6 @@ public class SocialAppTests {
 	 * Inicio de sesión con datos válidos.
 	 */
 	@Test
-	@Ignore
 	public void PR02_1() {
 		// Vamos a la página de autenticación (login)
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
@@ -214,7 +245,6 @@ public class SocialAppTests {
 	 * Inicio de sesión con datos inválidos (usuario no existe en la aplicación).
 	 */
 	@Test
-	@Ignore
 	public void PR02_2() {
 		// Vamos a la página de autenticación (login)
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
@@ -230,7 +260,6 @@ public class SocialAppTests {
 	 * Acceso al listado de usuarios desde el ususario en sesión.
 	 */
 	@Test
-	@Ignore
 	public void PR03_1() {
 		// Vamos a la página de autenticación (login)
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
@@ -254,7 +283,6 @@ public class SocialAppTests {
 	 * usuarios de un usuario en sesión.
 	 */
 	@Test
-	@Ignore
 	public void PR03_2() {
 
 		// Intentamos acceder a la página de listado sin estar autenticados.
@@ -269,7 +297,6 @@ public class SocialAppTests {
 	 * sesion.
 	 */
 	@Test
-	@Ignore
 	public void PR04_1() {
 
 		// Registramos un usuario que podamos buscar en la lista de usuarios
@@ -295,7 +322,6 @@ public class SocialAppTests {
 	 * identificado.
 	 */
 	@Test
-	@Ignore
 	public void PR04_2() {
 		// Intentamos acceder a la página de búsqueda sin estar autenticados.
 		driver.navigate().to("http://localhost:8081/usuarios?busqueda=ana");
@@ -308,7 +334,6 @@ public class SocialAppTests {
 	 * Enviar una petición de amistad a un usario de forma valida.
 	 */
 	@Test
-	@Ignore
 	public void PR05_1() {
 		// Accedemos como un usuario en sesión a la aplicación
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
@@ -329,7 +354,6 @@ public class SocialAppTests {
 	 * invitación previamente. No debería dejarnos enviar la invitación.
 	 */
 	@Test
-	@Ignore
 	public void PR05_2() {
 		// Accedemos como un usuario en sesión a la aplicación
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
@@ -354,7 +378,6 @@ public class SocialAppTests {
 	 * con una lista que al menos tenga un usaurio.
 	 */
 	@Test
-	@Ignore
 	public void PR06_1() {
 		// Accedemos como un usuario en sesión a la aplicación
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
@@ -372,7 +395,6 @@ public class SocialAppTests {
 	 * Acceptar una invitación recivida.
 	 */
 	@Test
-	@Ignore
 	public void PR07_1() {
 		// Accedemos como un usuario en sesión a la aplicación
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
@@ -403,7 +425,6 @@ public class SocialAppTests {
 	 * amigo.
 	 */
 	@Test
-	@Ignore
 	public void PR08_1() {
 		// Accedemos como un usuario en sesión a la aplicación
 		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
@@ -443,7 +464,6 @@ public class SocialAppTests {
 	 * Inicio de sesión con datos inválidos.
 	 */
 	@Test
-	@Ignore
 	public void PR0C1_2() {
 
 		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
@@ -496,11 +516,11 @@ public class SocialAppTests {
 		// Filtramos por ac
 		List<WebElement> elementos = PO_View.checkElement(driver, "id", "filtro-nombre");
 		elementos.get(0).click();
-		PO_LoginView.fillForm(driver, "ac");
+		PO_UsersView.fillForm(driver, "ac");
 
 		// Comprobamos que aparece acebal
 		PO_View.checkElement(driver, "text", "acebal");
-		
+
 	}
 
 	/**
@@ -508,7 +528,10 @@ public class SocialAppTests {
 	 * menos tres mensajes.
 	 */
 	@Test
-	public void PR0C2_3() {
+	public void PR0C3_1() {
+
+		// Creamos los mensajes
+		envia3Mensajes();
 
 		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
 		driver.navigate().to("http://localhost:8081/cliente.html");
@@ -523,6 +546,40 @@ public class SocialAppTests {
 		// Comprobamos que accedemos correctamente a la conversación
 		PO_View.checkElement(driver, "id", "tablaConver");
 		PO_View.checkElement(driver, "text", "acebal@mail.com");
+
+		// Comprobamos los 3 mensajes
+		PO_View.checkElement(driver, "text", "Hola");
+		PO_View.checkElement(driver, "text", "Que tal");
+		PO_View.checkElement(driver, "text", "Molas mucho");
+
+	}
+
+	/**
+	 * Acceder a la lista de mensajes de un amigo “chat” y crear un nuevo mensaje,
+	 * validar que el mensaje aparece en la lista de mensajes.
+	 */
+	@Test
+	public void PR0C4_1() {
+
+		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		// Rellenamos el campo email y password y nos logueamos
+		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
+
+		// Accedemos a la conversación con acebal
+		List<WebElement> elementos = PO_View.checkElement(driver, "text", "acebal");
+		elementos.get(0).click();
+
+		// Escribimos el mensaje
+		PO_UsersView.sendMessage(driver, "Hola acebal");
+		// Enviamos el primer mensaje
+		elementos = PO_View.checkElement(driver, "text", "Enviar");
+		elementos.get(0).click();
+
+		// Comprobamos que se ha creado el mensaje
+		SeleniumUtils.esperarSegundos(driver, 5);
+		PO_View.checkElement(driver, "text", "Hola acebal");
 
 	}
 
