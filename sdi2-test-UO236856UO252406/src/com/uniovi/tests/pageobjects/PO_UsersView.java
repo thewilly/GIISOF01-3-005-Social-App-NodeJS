@@ -21,7 +21,6 @@ import org.openqa.selenium.WebElement;
  */
 public class PO_UsersView extends PO_NavView {
 
-
 	/**
 	 * 
 	 * @param driver
@@ -42,11 +41,10 @@ public class PO_UsersView extends PO_NavView {
 	 * @param string
 	 */
 	public static void sendMessage(WebDriver driver, String string) {
-		WebElement userField = driver.findElement(By.id("mensajeTexto"));
+		WebElement userField = driver.findElement(By.className("form-control"));
 		userField.click();
 		userField.clear();
 		userField.sendKeys(string);
 	}
-	
 
 }
