@@ -108,15 +108,14 @@ module.exports = function(app, gestorBD) {
 
     var criterio = {
       '$or': [{
-        "emisor" : res.usuario,
-        "destino" : req.query.amigo
-      }, 
-      {
-        "emisor" : req.query.amigo,
-        "destino" : res.usuario
+        "emisor": res.usuario,
+        "destino": req.query.amigo
+      }, {
+        "emisor": req.query.amigo,
+        "destino": res.usuario
       }]
     };
-    
+
     gestorBD.obtenerMensajes(criterio, function(mensajes) {
       if (mensajes == null) {
         res.status(500);
@@ -125,7 +124,9 @@ module.exports = function(app, gestorBD) {
         });
       } else {
         res.status(200);
-        console.log('mensajes de: ' + res.usuario + ' para: ' + req.query.amigo);
+        console
+                .log('mensajes de: ' + res.usuario + ' para: '
+                        + req.query.amigo);
         console.log(mensajes);
         res.send(JSON.stringify(mensajes));
       }

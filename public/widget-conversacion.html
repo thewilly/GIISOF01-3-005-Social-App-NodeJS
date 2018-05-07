@@ -1,0 +1,76 @@
+<div id="widget-conversacion">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Conversacion con</th>
+				<th id="converWith" />
+			</tr>
+		</thead>
+		<tbody id="tablaConver">
+		</tbody>
+	</table>
+	<div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="texto">Mensaje:</label>
+			<div class="col-sm-10">
+				<input id="mensajeTexto" type="text" class="form-control"
+					name="texto" placeholder="Hola, ¿qué tal estás?" required="true" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="btn" onclick="enviarMensaje()" class="btn btn-primary">Enviar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+  intervalMId = setInterval(function() {
+    compruebaMensajes();
+  }, 1000);
+
+  function compruebaMensajes() {
+    $.ajax({
+      url: URLbase + "/mensajes?amigo=" + $("#converWith").text(),
+      type: "GET",
+      data: {},
+      dataType: 'json',
+      headers: {
+        "token": token
+      },
+      success: function(respuesta) {
+        mensajes = respuesta;
+        if (mensajes.length > leng) {
+          actualizarTablaMensajes(mensajes);
+        }
+      },
+      error: function(error) {
+        clearInterval(intervalMId);
+        $("#contenedor-principal").load("widget-login.html");
+      }
+    });
+  }
+
+  function enviarMensaje() {
+    $.ajax({
+      url: URLbase + "/mensajes",
+      type: "POST",
+      data: {
+        destino: $("#converWith").text(),
+        texto: $("#mensajeTexto").val()
+      },
+      dataType: 'json',
+      headers: {
+        "token": token
+      },
+      success: function(res) {
+        //compruebaMensajes();
+        $("#mensajeTexto").val('');
+      },
+      error: function(error) {
+        $("#contenedor-principal").load("widget-login.html");
+      }
+    });
+  }
+</script>

@@ -42,7 +42,7 @@ app.use(function(err, req, res, next) {
   if (!res.headersSent) {
     res.status(400);
     res.send("Recurso no disponible");
-  }
+  } 
 });
 
 // Setting the parameters for the express-session

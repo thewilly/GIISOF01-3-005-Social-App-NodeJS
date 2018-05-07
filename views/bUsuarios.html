@@ -46,6 +46,13 @@ endblock %} {% block contenido_principal %}
 						{% set boton = "false" %}
 					{% endif %}
 				{% endfor %}
+				
+				{% for amigo in amigos %}
+					{% if usuario.email == amigo.amigoEmail %}
+						<td>Ya sois amigos</td>
+						{% set boton = "false" %}
+					{% endif %}
+				{% endfor %}
 
 				{% if usuario.email == actual %}
 						<td></td>
