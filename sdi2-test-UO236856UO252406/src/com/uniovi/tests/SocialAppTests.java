@@ -39,18 +39,18 @@ public class SocialAppTests {
 	 *                        macOS configuration properties.                            *
 	 *                                                                                   *
 	 *************************************************************************************/
-	static String PathFirefox = "/Applications/FirefoxSDI.app/Contents/MacOS/firefox-bin";
-	static WebDriver driver = getDriver( PathFirefox );
-	static String URL = "http://localhost:8081";
+//	static String PathFirefox = "/Applications/FirefoxSDI.app/Contents/MacOS/firefox-bin";
+//	static WebDriver driver = getDriver( PathFirefox );
+//	static String URL = "http://localhost:8081";
 
 	/*************************************************************************************
 	 *                                                                                   *
 	 *                      Windows configuration properties.                            *
 	 *                                                                                   *
 	 *************************************************************************************/
-	//static String PathFirefox = "D:\\Escritorio\\Firefox46.win\\FirefoxPortable.exe";
-	//static WebDriver driver = getDriver(PathFirefox);
-	//static String URL = "http://localhost:8081";
+	static String PathFirefox = "D:\\Escritorio\\Firefox46.win\\FirefoxPortable.exe";
+	static WebDriver driver = getDriver(PathFirefox);
+	static String URL = "http://localhost:8081";
 
 	public static WebDriver getDriver(String PathFirefox) {
 		// Firefox (Versi�n 46.0) sin geckodriver para Selenium 2.x.
@@ -145,16 +145,19 @@ public class SocialAppTests {
 		// Enviamos el primer mensaje
 		elementos = PO_View.checkElement(driver, "text", "Enviar");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 
 		// Escribimos el segundo mensaje
 		PO_UsersView.sendMessage(driver, "Que tal");
 		// Enviamos el segundo mensaje
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 
 		// Escribimos el tercer mensaje
 		PO_UsersView.sendMessage(driver, "Molas mucho");
 		// Enviamos el tercer mensaje
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 
 	}
 
