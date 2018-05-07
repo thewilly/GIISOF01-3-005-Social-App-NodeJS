@@ -44,5 +44,15 @@ public class PO_LoginView extends PO_NavView {
 		driver.findElement(boton).click();
 
 	}
+	
+	public static void fillForm(WebDriver driver, String texto) {
+		// Enter the user name field.
+		WebElement userField = driver.findElement(By.id("filtro-nombre"));
+		userField.click();
+		userField.clear();
+		userField.sendKeys(texto);
+
+	}
+	
 
 }

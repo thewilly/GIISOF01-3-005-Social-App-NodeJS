@@ -21,6 +21,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.uniovi.tests.pageobjects.PO_HomeView;
 import com.uniovi.tests.pageobjects.PO_LoginView;
+import com.uniovi.tests.pageobjects.PO_NavView;
 import com.uniovi.tests.pageobjects.PO_RegisterView;
 import com.uniovi.tests.pageobjects.PO_View;
 
@@ -68,6 +69,57 @@ public class SocialAppTests {
 		PO_View.checkElement(driver, "text", "Nuevo usuario registrado");
 	}
 
+	private void añadadir3AmigosPepe() {
+		// Registramos a acebal en la aplicación
+		registrarUsuario("acebal", "acebal@mail.com", "1234");
+		// Accedemos como acebal a la aplicación y le mandamos una petición a pepe
+		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "acebal@mail.com", "1234");
+
+		List<WebElement> elementos = PO_View.checkElement(driver, "free",
+				"/html/body/div/div[2]/table/tbody/tr[1]/td[3]/a");
+		elementos.get(0).click();
+
+		// Registramos a ortin en la aplicación
+		PO_HomeView.clickOption(driver, "desconectarse", "class", "btn btn-primary");
+		registrarUsuario("ortin", "ortin@mail.com", "1234");
+		// Accedemos como ortin a la aplicación y le mandamos una petición a pepe
+		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "ortin@mail.com", "1234");
+
+		elementos = PO_View.checkElement(driver, "free", "/html/body/div/div[2]/table/tbody/tr[1]/td[3]/a");
+		elementos.get(0).click();
+
+		// Registramos a miguel en la aplicación
+		PO_HomeView.clickOption(driver, "desconectarse", "class", "btn btn-primary");
+		registrarUsuario("miguel", "miguel@mail.com", "1234");
+
+		// Accedemos como miguel a la aplicación y le mandamos una petición a pepe
+		PO_HomeView.clickOption(driver, "identificarse", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "miguel@mail.com", "1234");
+
+		elementos = PO_View.checkElement(driver, "free", "/html/body/div/div[2]/table/tbody/tr[1]/td[3]/a");
+		elementos.get(0).click();
+
+		// Accedemos a la aplicación como pepe
+		PO_HomeView.clickOption(driver, "desconectarse", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
+
+		PO_HomeView.clickOption(driver, "invitaciones", "free", "//h2[contains(text(), 'Invitaciones')]");
+
+		elementos = PO_View.checkElement(driver, "free", "/html/body/div/div[1]/table/tbody/tr/td[2]/a");
+		elementos.get(0).click();
+
+		elementos = PO_View.checkElement(driver, "free", "/html/body/div/div[1]/table/tbody/tr/td[2]/a");
+		elementos.get(0).click();
+
+		elementos = PO_View.checkElement(driver, "free", "/html/body/div/div[1]/table/tbody/tr/td[2]/a");
+		elementos.get(0).click();
+
+		PO_HomeView.clickOption(driver, "desconectarse", "class", "btn btn-primary");
+
+	}
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -92,7 +144,7 @@ public class SocialAppTests {
 	@AfterClass
 	public static void end() {
 		driver.quit();
-		// restoreDB();
+		restoreDB();
 	}
 
 	/**
@@ -381,7 +433,9 @@ public class SocialAppTests {
 		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
 
 		// Checkear que se ha logueado correctamente
-		PO_View.checkElement(driver, "id", "tablaCuerpo");
+		PO_View.checkElement(driver, "text", "Nombre");
+		PO_View.checkElement(driver, "text", "Email");
+		PO_View.checkElement(driver, "text", "Actualizar");
 
 	}
 
@@ -389,6 +443,7 @@ public class SocialAppTests {
 	 * Inicio de sesión con datos inválidos.
 	 */
 	@Test
+	@Ignore
 	public void PR0C1_2() {
 
 		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
@@ -407,30 +462,67 @@ public class SocialAppTests {
 	 */
 	@Test
 	public void PR0C2_1() {
-
-		// Registramos 2 nuevos usuarios
-		registrarUsuario("acebal", "acebal@email.com", "1234");
-		registrarUsuario("ortin", "ortin@email.com", "1234");
-
-		// Accedemos como un usuario en sesión a la aplicación
-		PO_HomeView.clickOption(driver, "registrarse", "class", "btn btn-primary");
-		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
-
-		// Vamos al usuario con email p6@hotmail.com y le enviamos una petición
-		// de
-		// amistad.
-		List<WebElement> elementos = PO_View.checkElement(driver, "free",
-				"/html/body/div/div[2]/table/tbody/tr[2]/td[3]/a");
-		elementos.get(0).click();
+		// Añadimos 3 amigos a pepe
+		añadadir3AmigosPepe();
 
 		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
 		driver.navigate().to("http://localhost:8081/cliente.html");
 
 		// Rellenamos el campo email y password y nos logueamos
-		PO_LoginView.fillForm(driver, "pepe@mail.com", "12345");
+		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
 
-		// Checkear que no se ha logueado correctamente
-		PO_View.checkElement(driver, "id", "widget-login");
+		// Checkear el primer amigo
+		PO_View.checkElement(driver, "text", "acebal");
+		// Checkear el segundo amigo
+		PO_View.checkElement(driver, "text", "ortin");
+		// Checkear el tercer amigo
+		PO_View.checkElement(driver, "text", "miguel");
+	}
+
+	/**
+	 * Acceder a la lista de amigos de un usuario, y realizar un filtrado para
+	 * encontrar a un amigo concreto, el nombre a buscar debe coincidir con el de un
+	 * amigo.
+	 */
+	@Test
+	public void PR0C2_2() {
+
+		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		// Rellenamos el campo email y password y nos logueamos
+		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
+
+		// Filtramos por ac
+		List<WebElement> elementos = PO_View.checkElement(driver, "id", "filtro-nombre");
+		elementos.get(0).click();
+		PO_LoginView.fillForm(driver, "ac");
+
+		// Comprobamos que aparece acebal
+		PO_View.checkElement(driver, "text", "acebal");
+		
+	}
+
+	/**
+	 * Acceder a la lista de mensajes de un amigo “chat”, la lista debe contener al
+	 * menos tres mensajes.
+	 */
+	@Test
+	public void PR0C2_3() {
+
+		// Accedemos a la página de inicio de sesión de la aplicación JQUERY
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		// Rellenamos el campo email y password y nos logueamos
+		PO_LoginView.fillForm(driver, "pepe@mail.com", "1234");
+
+		// Accedemos a la conversación con acebal
+		List<WebElement> elementos = PO_View.checkElement(driver, "text", "acebal");
+		elementos.get(0).click();
+
+		// Comprobamos que accedemos correctamente a la conversación
+		PO_View.checkElement(driver, "id", "tablaConver");
+		PO_View.checkElement(driver, "text", "acebal@mail.com");
 
 	}
 
