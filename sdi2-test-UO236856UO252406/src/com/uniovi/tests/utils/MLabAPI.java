@@ -15,7 +15,7 @@ import java.net.URL;
 public class MLabAPI {
 
 	private static final String API_BASE_URL = "https://api.mlab.com/api/1";
-	private static final String API_KEY = "wlahj0so9C_de9uzmxpDSh58hbkuSlye";
+	private static final String API_KEY = "";
 
 	/**
 	 * From a given database name will remove the given collection.
